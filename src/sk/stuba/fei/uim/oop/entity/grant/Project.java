@@ -61,6 +61,7 @@ public class Project implements sk.stuba.fei.uim.oop.entity.grant.ProjectInterfa
 
     @Override
     public int getTotalBudget() {
+         budget_t = 0;
          for (int i = this.getStartingYear(); i <= year+Constants.PROJECT_DURATION_IN_YEARS; i++) {
 //             this.getApplicant().projectBudgetUpdateNotification(this, i, budgetForYear.get(i));
              budget_t += budgetForYear.getOrDefault(i, 0);

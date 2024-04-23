@@ -140,8 +140,9 @@ public class Grant implements GrantInterface {
         if (validProjects.size() == 1) {
             budgetPerProject = getBudget();
             budgetPerProject = budgetPerProject / Constants.PROJECT_DURATION_IN_YEARS;
-            for (int i = this.getYear(); i <= validProjects.get(0).getEndingYear(); i++) {
-                validProjects.get(0).setBudgetForYear(i, budgetPerProject);
+            validProjects.get(0).setBudgetForYear(getYear(), budgetPerProject);
+            for (int l = this.getYear(); l <= validProjects.get(0).getEndingYear(); l++) {
+                validProjects.get(0).getApplicant().projectBudgetUpdateNotification(validProjects.get(0),l, budgetPerProject);
             }
         } else {
             if(!validProjects.isEmpty() && this.getRemainingBudget() > 0) {
@@ -150,6 +151,7 @@ public class Grant implements GrantInterface {
                 for (int i = 0; i < validProjects.size() / 2; i++) {
                     for (int l = this.getYear(); l <= validProjects.get(i).getEndingYear(); l++) {
                         validProjects.get(i).setBudgetForYear(l, budgetPerProject);
+                        validProjects.get(i).getApplicant().projectBudgetUpdateNotification(validProjects.get(i),l, budgetPerProject);
                     }
                 }
             }else {

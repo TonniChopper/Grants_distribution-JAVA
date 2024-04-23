@@ -85,12 +85,11 @@ public class Organization implements OrganizationInterface{
     }
     @Override
     public int getBudgetForAllProjects() {
-        if (this instanceof University) {
-            return 0;
-        } else if (this instanceof Company) {
-            return org_budget;
+        int totalBudget = 0;
+        for (ProjectInterface project : getAllProjects()) {
+            totalBudget += project.getTotalBudget();
         }
-        return 0;
+        return totalBudget;
     }
 
     @Override
