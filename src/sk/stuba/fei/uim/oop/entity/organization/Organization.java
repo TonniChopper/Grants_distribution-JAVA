@@ -10,6 +10,7 @@ public class Organization implements OrganizationInterface{
     private String name;
     private int org_budget = Constants.COMPANY_INIT_OWN_RESOURCES;
     private Map<PersonInterface, Integer> employees;
+    private Map<ProjectInterface, Integer> projectsBudget;
     private Set<GrantInterface> grants ;
     private Set<ProjectInterface> projects;
     public Organization() {
@@ -96,8 +97,10 @@ public class Organization implements OrganizationInterface{
     public void projectBudgetUpdateNotification(ProjectInterface pi, int year, int budgetForYear) {
         if (this.projects.contains(pi)) {
             if (this instanceof Company) {
-                int companyContribution = Math.min(org_budget, budgetForYear);
-                pi.setBudgetForYear(year, budgetForYear + companyContribution);
+                int budget = budgetForYear*Constants.PROJECT_DURATION_IN_YEARS;
+                int companyContribution = Math.min(org_budget, budget);
+//                pi.setBudgetForYear(year, budgetForYear + companyContribution);
+                projectsBudget.put(pi, budget + companyContribution);
                 org_budget -= companyContribution;
             }else
                 pi.setBudgetForYear(year, budgetForYear);

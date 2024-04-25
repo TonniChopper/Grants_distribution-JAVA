@@ -63,7 +63,7 @@ public class Grant implements GrantInterface {
 
     @Override
     public int getBudgetForProject(ProjectInterface project) { //?????????????????????????????????????????????????????77
-        proj_budget = project.getBudgetForYear(year) - (project.getApplicant() instanceof Company ? Math.min(project.getBudgetForYear(year) , Constants.COMPANY_INIT_OWN_RESOURCES) : 0);
+        proj_budget = project.getBudgetForYear(year) ;
         proj_budget = proj_budget * Constants.PROJECT_DURATION_IN_YEARS;
         return proj_budget;
     }
@@ -108,11 +108,14 @@ public class Grant implements GrantInterface {
                 for (ProjectInterface proj : organizations.getAllProjects()) {
                     for (GrantInterface grant : ((Organization) organizations).getGrants()) {
                         if (grant.getRegisteredProjects().contains(proj)) {
+                            if (grant.getState() == GrantState.EVALUATING){
+                                continue;
+                            }
                             if (grant.getState() == GrantState.CLOSED
                             && this.getYear()>proj.getEndingYear())
                                 break;
                             if (grant.getState() == GrantState.CLOSED
-                                    || this.getState() == GrantState.EVALUATING
+//                                    || this.getState() == GrantState.EVALUATING
                                     && proj.getAllParticipants().contains(participant)
                                     && this.getYear() <= proj.getEndingYear()) {
                                 totalCommitment += organizations.getEmploymentForEmployee(participant);
@@ -148,7 +151,8 @@ public class Grant implements GrantInterface {
             budgetPerProject = budgetPerProject / Constants.PROJECT_DURATION_IN_YEARS;
             validProjects.get(0).setBudgetForYear(getYear(), budgetPerProject);
             for (int l = this.getYear(); l <= validProjects.get(0).getEndingYear(); l++) {
-                validProjects.get(0).getApplicant().projectBudgetUpdateNotification(validProjects.get(0),l, budgetPerProject);
+                validProjects.get(0).setBudgetForYear(l, budgetPerProject);
+//                validProjects.get(0).getApplicant().projectBudgetUpdateNotification(validProjects.get(0),l, budgetPerProject);
             }
         } else {
             if(!validProjects.isEmpty() && this.getRemainingBudget() > 0) {
@@ -157,7 +161,7 @@ public class Grant implements GrantInterface {
                 for (int i = 0; i < validProjects.size() / 2; i++) {
                     for (int l = this.getYear(); l <= validProjects.get(i).getEndingYear(); l++) {
                         validProjects.get(i).setBudgetForYear(l, budgetPerProject);
-                        validProjects.get(i).getApplicant().projectBudgetUpdateNotification(validProjects.get(i),l, budgetPerProject);
+//                        validProjects.get(i).getApplicant().projectBudgetUpdateNotification(validProjects.get(i),l, budgetPerProject);
                     }
                 }
             }else {
