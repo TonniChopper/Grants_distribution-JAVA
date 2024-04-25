@@ -36,7 +36,7 @@ public class Project implements sk.stuba.fei.uim.oop.entity.grant.ProjectInterfa
 
     @Override
     public int getEndingYear() {
-        return year + (Constants.PROJECT_DURATION_IN_YEARS-1);
+        return year + (Constants.PROJECT_DURATION_IN_YEARS - 1);
     }
 
     @Override

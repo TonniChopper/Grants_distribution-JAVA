@@ -108,7 +108,10 @@ public class Grant implements GrantInterface {
                 for (ProjectInterface proj : organizations.getAllProjects()) {
                     for (GrantInterface grant : ((Organization) organizations).getGrants()) {
                         if (grant.getRegisteredProjects().contains(proj)) {
-                            if (grant.getState() == GrantState.CLOSED || this.getState() == GrantState.EVALUATING && proj.getAllParticipants().contains(participant) && this.getYear() <= proj.getEndingYear()) {
+                            if (grant.getState() == GrantState.CLOSED
+                                    || this.getState() == GrantState.EVALUATING
+                                    && proj.getAllParticipants().contains(participant)
+                                    && this.getYear() <= proj.getEndingYear()) {
                                 totalCommitment += organizations.getEmploymentForEmployee(participant);
                                 break;
                             }
