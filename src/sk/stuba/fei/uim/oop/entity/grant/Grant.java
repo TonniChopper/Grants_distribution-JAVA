@@ -63,7 +63,7 @@ public class Grant implements GrantInterface {
 
     @Override
     public int getBudgetForProject(ProjectInterface project) { //?????????????????????????????????????????????????????77
-        proj_budget = project.getBudgetForYear(year);
+        proj_budget = project.getBudgetForYear(year) - (project.getApplicant() instanceof Company ? Math.min(project.getBudgetForYear(year) , Constants.COMPANY_INIT_OWN_RESOURCES) : 0);
         proj_budget = proj_budget * Constants.PROJECT_DURATION_IN_YEARS;
         return proj_budget;
     }
@@ -108,6 +108,9 @@ public class Grant implements GrantInterface {
                 for (ProjectInterface proj : organizations.getAllProjects()) {
                     for (GrantInterface grant : ((Organization) organizations).getGrants()) {
                         if (grant.getRegisteredProjects().contains(proj)) {
+                            if (grant.getState() == GrantState.CLOSED
+                            && this.getYear()>proj.getEndingYear())
+                                break;
                             if (grant.getState() == GrantState.CLOSED
                                     || this.getState() == GrantState.EVALUATING
                                     && proj.getAllParticipants().contains(participant)

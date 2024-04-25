@@ -97,7 +97,7 @@ public class Organization implements OrganizationInterface{
         if (this.projects.contains(pi)) {
             if (this instanceof Company) {
                 int companyContribution = Math.min(org_budget, budgetForYear);
-                pi.setBudgetForYear(year, pi.getBudgetForYear(year) + companyContribution);
+                pi.setBudgetForYear(year, budgetForYear + companyContribution);
                 org_budget -= companyContribution;
             }else
                 pi.setBudgetForYear(year, budgetForYear);
