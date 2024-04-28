@@ -11,7 +11,7 @@ public class Grant implements GrantInterface {
     private AgencyInterface agency;
     private Organization organization ;
     private GrantState State;
-    private Set<ProjectInterface> registeredProjects = new HashSet<>();
+    private Set<ProjectInterface> registeredProjects = new LinkedHashSet<>();
 //    List<ProjectInterface> validProjects = new ArrayList<>();
     @Override
     public String getIdentifier() {
@@ -99,7 +99,8 @@ public class Grant implements GrantInterface {
 
     @Override
     public void callForProjects() {
-        State = GrantState.STARTED;
+        if (State == null && State != GrantState.CLOSED)
+            State = GrantState.STARTED;
     }
     private boolean checkResearchCapacity(ProjectInterface project) {
         for (PersonInterface participant : project.getAllParticipants()) {
@@ -136,7 +137,8 @@ public class Grant implements GrantInterface {
     public void evaluateProjects() {
         List<ProjectInterface> projects = new ArrayList<>(getRegisteredProjects());
         List<ProjectInterface> validProjects = new ArrayList<>();
-        State = GrantState.EVALUATING;
+        if (State != null && State == GrantState.STARTED)
+            State = GrantState.EVALUATING;
         for (ProjectInterface project : projects) {
             if (checkResearchCapacity(project)) {
                 validProjects.add(project);
@@ -177,6 +179,9 @@ public class Grant implements GrantInterface {
 
     @Override
     public void closeGrant() {
-        State = GrantState.CLOSED;
+        if (State == GrantState.EVALUATING)
+            State = GrantState.CLOSED;
+        else if (State == GrantState.STARTED)
+            State = GrantState.STARTED;
     }
 }

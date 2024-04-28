@@ -8,7 +8,8 @@ import java.util.*;
 
 public class Organization implements OrganizationInterface{
     private String name;
-    private int org_budget = Constants.COMPANY_INIT_OWN_RESOURCES;
+//    private int org_budget = Constants.COMPANY_INIT_OWN_RESOURCES;
+    private int org_budget = 0;
     private Map<PersonInterface, Integer> employees;
     private Map<ProjectInterface, Integer> projectsBudget;
     private Set<GrantInterface> grants ;
@@ -72,8 +73,12 @@ public class Organization implements OrganizationInterface{
         if (this instanceof University) {
             return pi.getTotalBudget();
         } else if (this instanceof Company) {
-            int companyContribution = Math.min(org_budget, pi.getTotalBudget());
-            return pi.getTotalBudget() + companyContribution;
+            int companyContribution = Math.min(Constants.COMPANY_INIT_OWN_RESOURCES, pi.getTotalBudget());
+            this.org_budget += companyContribution;
+            if(this.org_budget > Constants.COMPANY_INIT_OWN_RESOURCES){
+                return pi.getTotalBudget();
+            }else
+                return pi.getTotalBudget() + companyContribution;
         }
 
         return 0;
@@ -96,12 +101,16 @@ public class Organization implements OrganizationInterface{
     @Override
     public void projectBudgetUpdateNotification(ProjectInterface pi, int year, int budgetForYear) {
         if (this.projects.contains(pi)) {
+
             if (this instanceof Company) {
                 int budget = budgetForYear*Constants.PROJECT_DURATION_IN_YEARS;
-                int companyContribution = Math.min(org_budget, budget);
+                int companyContribution = Math.min(Constants.COMPANY_INIT_OWN_RESOURCES, budget);
 //                pi.setBudgetForYear(year, budgetForYear + companyContribution);
-                projectsBudget.put(pi, budget + companyContribution);
-                org_budget -= companyContribution;
+                this.org_budget += companyContribution;
+                if(this.org_budget >= Constants.COMPANY_INIT_OWN_RESOURCES){
+                    projectsBudget.put(pi, budget);
+                }else
+                    projectsBudget.put(pi, budget + companyContribution);
             }else
                 pi.setBudgetForYear(year, budgetForYear);
         }
