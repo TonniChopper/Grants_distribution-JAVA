@@ -6,10 +6,10 @@ import sk.stuba.fei.uim.oop.utility.*;
 
 import java.util.*;
 
-public class Organization implements OrganizationInterface{
+public abstract class Organization implements OrganizationInterface{
     private String name;
 //    private int org_budget = Constants.COMPANY_INIT_OWN_RESOURCES;
-    private int org_budget = 0;
+    protected int org_budget = 0;
     private Map<PersonInterface, Integer> employees;
     private Map<ProjectInterface, Integer> projectsBudget;
     private Set<GrantInterface> grants ;
@@ -69,19 +69,19 @@ public class Organization implements OrganizationInterface{
         if (!this.projects.contains(pi)) {
             return 0;
         }
-
-        if (this instanceof University) {
-            return pi.getTotalBudget();
-        } else if (this instanceof Company) {
-            int companyContribution = Math.min(Constants.COMPANY_INIT_OWN_RESOURCES, pi.getTotalBudget());
-            this.org_budget += companyContribution;
-            if(this.org_budget > Constants.COMPANY_INIT_OWN_RESOURCES){
-                return pi.getTotalBudget();
-            }else
-                return pi.getTotalBudget() + companyContribution;
-        }
-
-        return 0;
+        return get_project_budget_internal(pi);
+//        if (this instanceof University) {
+//            return pi.getTotalBudget();
+//        } else if (this instanceof Company) {
+//            int companyContribution = Math.min(Constants.COMPANY_INIT_OWN_RESOURCES, pi.getTotalBudget());
+//            this.org_budget += companyContribution;
+//            if(this.org_budget > Constants.COMPANY_INIT_OWN_RESOURCES){
+//                return pi.getTotalBudget();
+//            }else
+//                return pi.getTotalBudget() + companyContribution;
+//        }
+//
+//        return 0;
     }
     public void addGrant(GrantInterface grant) {
         this.grants.add(grant);
@@ -115,4 +115,7 @@ public class Organization implements OrganizationInterface{
                 pi.setBudgetForYear(year, budgetForYear);
         }
     }
+
+    public abstract int get_project_budget_internal(ProjectInterface pi);
+
 }

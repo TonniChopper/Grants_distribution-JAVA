@@ -216,7 +216,7 @@ class TestClass {
         grant3.evaluateProjects();
         grant3.closeGrant();
 
-         assertEquals(0, grant3.getBudgetForProject(projects.get(5)));
+        assertEquals(0, grant3.getBudgetForProject(projects.get(5)));
 
 
     }
