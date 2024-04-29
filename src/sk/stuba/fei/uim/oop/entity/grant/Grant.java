@@ -5,11 +5,9 @@ import sk.stuba.fei.uim.oop.entity.people.*;
 import java.util.*;
 
 public class Grant implements GrantInterface {
-    private String name;
     private String identifier;
     private int year, budget, proj_budget, default_budget;
     private AgencyInterface agency;
-    private Organization organization ;
     private GrantState State;
     private Set<ProjectInterface> registeredProjects = new LinkedHashSet<>();
 //    List<ProjectInterface> validProjects = new ArrayList<>();

@@ -11,7 +11,7 @@ public class Project implements sk.stuba.fei.uim.oop.entity.grant.ProjectInterfa
     private int year;
     private Set<PersonInterface> participants = new HashSet<>();
     private Map<Integer, Integer> budgetForYear = new HashMap<>();
-    private int budget_t = 0, budget = 0;
+    private int budget_t = 0;
     private OrganizationInterface organization;
 
     @Override
@@ -43,14 +43,14 @@ public class Project implements sk.stuba.fei.uim.oop.entity.grant.ProjectInterfa
     public int getBudgetForYear(int year) {
         return budgetForYear.getOrDefault(year, 0);
     }
-    public int setBudget_t(int budget) {
-        this.budget_t = budget;
-        this.budget = budget_t / Constants.PROJECT_DURATION_IN_YEARS;
-        for (int i = this.getStartingYear(); i < year+Constants.PROJECT_DURATION_IN_YEARS; i++) {
-            budgetForYear.put(i, budget);
-        }
-        return budget_t;
-    }
+//    public int setBudget_t(int budget) {
+//        this.budget_t = budget;
+//        this.budget = budget_t / Constants.PROJECT_DURATION_IN_YEARS;
+//        for (int i = this.getStartingYear(); i < year+Constants.PROJECT_DURATION_IN_YEARS; i++) {
+//            budgetForYear.put(i, budget);
+//        }
+//        return budget_t;
+//    }
     @Override
     public void setBudgetForYear(int year, int budget) {
         budgetForYear.put(year, budget);
