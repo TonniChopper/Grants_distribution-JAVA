@@ -72,7 +72,7 @@ public class Project implements sk.stuba.fei.uim.oop.entity.grant.ProjectInterfa
 
     @Override
     public void addParticipant(PersonInterface participant) {
-        if (organization.getEmployees().contains(participant)) {
+        if (this.getApplicant().getEmployees().contains(participant)) {
             participants.add(participant);
         }
     }

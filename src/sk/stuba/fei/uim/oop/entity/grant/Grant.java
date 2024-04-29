@@ -114,8 +114,9 @@ public class Grant implements GrantInterface {
                             }
                             if (grant.getState() == GrantState.CLOSED
                             && this.getYear()>proj.getEndingYear())
-                                break;
+                                continue;
                             if (grant.getState() == GrantState.CLOSED
+                                    && grant.getAgency() == this.getAgency()
 //                                    || this.getState() == GrantState.EVALUATING
                                     && proj.getAllParticipants().contains(participant)
                                     && this.getYear() <= proj.getEndingYear()) {
@@ -123,7 +124,7 @@ public class Grant implements GrantInterface {
                                 break;
                             }
                         }else
-                            break;
+                            continue;
                     }
                 }
             }
